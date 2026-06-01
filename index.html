@@ -75,10 +75,46 @@ header{background:var(--white);border-bottom:1px solid var(--border);
 .logo{font-family:var(--font-display);font-size:22px;font-weight:500;
   letter-spacing:.5px;cursor:pointer;color:var(--dark);}
 .logo span{color:var(--accent);}
-nav{display:flex;gap:2rem;}
+nav{display:flex;gap:2rem;align-items:center;}
 nav a{font-size:13px;color:var(--muted);cursor:pointer;
   transition:color .15s;text-decoration:none;}
 nav a:hover{color:var(--dark);}
+.nav-dropdown{position:relative;}
+.nav-dropdown-btn{
+  font-size:13px;color:var(--muted);cursor:pointer;
+  background:none;border:none;font-family:var(--font-body);
+  display:flex;align-items:center;gap:4px;padding:0;
+  transition:color .15s;
+}
+.nav-dropdown-btn:hover,.nav-dropdown.open .nav-dropdown-btn{color:var(--dark);}
+.nav-dropdown-arrow{
+  font-size:9px;transition:transform .2s;display:inline-block;
+}
+.nav-dropdown.open .nav-dropdown-arrow{transform:rotate(180deg);}
+.nav-dropdown-menu{
+  position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);
+  background:var(--white);border:1px solid var(--border);border-radius:8px;
+  min-width:180px;padding:6px 0;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  opacity:0;pointer-events:none;
+  transform:translateX(-50%) translateY(-6px);
+  transition:opacity .18s,transform .18s;
+  z-index:200;
+}
+.nav-dropdown.open .nav-dropdown-menu{
+  opacity:1;pointer-events:all;
+  transform:translateX(-50%) translateY(0);
+}
+.nav-dropdown-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 16px;font-size:13px;color:var(--dark);
+  cursor:pointer;transition:background .12s;
+  background:none;border:none;width:100%;
+  font-family:var(--font-body);text-align:left;
+}
+.nav-dropdown-item:hover{background:var(--light);}
+.nav-dropdown-item .item-emoji{font-size:15px;}
+.nav-dropdown-divider{height:1px;background:var(--border);margin:4px 0;}
 .header-right{display:flex;align-items:center;gap:1rem;}
 .icon-btn{
   background:none;border:none;cursor:pointer;
@@ -93,6 +129,14 @@ nav a:hover{color:var(--dark);}
   font-size:9px;font-weight:500;font-family:var(--font-body);
   display:flex;align-items:center;justify-content:center;
 }
+.cart-nav-btn{
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--muted);cursor:pointer;
+  background:none;border:none;font-family:var(--font-body);
+  transition:color .15s;position:relative;padding:0;
+}
+.cart-nav-btn:hover{color:var(--dark);}
+.cart-nav-btn .cart-badge{position:static;}
 .login-btn{
   font-size:12px;font-family:var(--font-body);
   border:1px solid var(--border);background:none;
@@ -522,14 +566,39 @@ nav a:hover{color:var(--dark);}
     <div class="logo" onclick="goTo('home')">Maison<span>.</span>Decor</div>
     <nav>
       <a onclick="goTo('home')">Home</a>
-      <a onclick="showPLP('Sala')">Sala</a>
-      <a onclick="showPLP('Quarto')">Quarto</a>
-      <a onclick="showPLP('Cozinha')">Cozinha</a>
-      <a onclick="showPLP('Banheiro')">Banheiro</a>
+
+      <!-- Dropdown Produtos -->
+      <div class="nav-dropdown" id="nav-produtos">
+        <button class="nav-dropdown-btn" onclick="toggleDropdown('nav-produtos')">
+          Produtos <span class="nav-dropdown-arrow">▼</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <button class="nav-dropdown-item" onclick="showPLP('Todos');closeDropdowns()">
+            <span class="item-emoji">🏠</span> Todos os produtos
+          </button>
+          <div class="nav-dropdown-divider"></div>
+          <button class="nav-dropdown-item" onclick="showPLP('Sala');closeDropdowns()">
+            <span class="item-emoji">🛋️</span> Sala
+          </button>
+          <button class="nav-dropdown-item" onclick="showPLP('Quarto');closeDropdowns()">
+            <span class="item-emoji">🛏️</span> Quarto
+          </button>
+          <button class="nav-dropdown-item" onclick="showPLP('Cozinha');closeDropdowns()">
+            <span class="item-emoji">🍳</span> Cozinha
+          </button>
+          <button class="nav-dropdown-item" onclick="showPLP('Banheiro');closeDropdowns()">
+            <span class="item-emoji">🛁</span> Banheiro
+          </button>
+          <button class="nav-dropdown-item" onclick="showPLP('Jardim');closeDropdowns()">
+            <span class="item-emoji">🌿</span> Jardim
+          </button>
+        </div>
+      </div>
     </nav>
+
     <div class="header-right">
-      <button class="icon-btn" onclick="openCart()">
-        🛒
+      <button class="cart-nav-btn" onclick="openCart()">
+        Carrinho
         <span class="cart-badge" id="cart-badge">0</span>
       </button>
       <button class="login-btn" id="login-btn" onclick="openLogin()">Entrar</button>
@@ -1270,8 +1339,22 @@ function heroCTAClick() {
 }
 
 // ═══════════════════════════════════════════════════
-// UTILS
+// DROPDOWN NAV
 // ═══════════════════════════════════════════════════
+function toggleDropdown(id) {
+  const el = document.getElementById(id);
+  const isOpen = el.classList.contains('open');
+  closeDropdowns();
+  if (!isOpen) el.classList.add('open');
+}
+function closeDropdowns() {
+  document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-dropdown')) closeDropdowns();
+});
+
+
 function fmt(v) { return 'R$ ' + v.toFixed(2).replace('.',','); }
 
 // ═══════════════════════════════════════════════════
