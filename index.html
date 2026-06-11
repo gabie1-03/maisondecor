@@ -893,17 +893,13 @@ function goTo(viewName) {
       page_location: window.location.href + '#home'
     });
     startHeroAuto();
-  }
-}
 
-// ================================================================
-// PLP — PAGINA DE LISTAGEM DE PRODUTOS
-// ================================================================
+    // ── EVENTO: scroll ─────────────────────────────────────────
+// Disparado quando o usuario atinge marcos de 25, 50, 75 e 100%.
+// marcosDisparados garante que cada marco dispara apenas uma vez.
 var marcosDisparados = [];
-
 document.addEventListener('scroll', function() {
   var porcentagem = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
-
   [25, 50, 75, 100].forEach(function(marco) {
     if (porcentagem >= marco && marcosDisparados.indexOf(marco) === -1) {
       push('scroll', {
@@ -914,6 +910,13 @@ document.addEventListener('scroll', function() {
       marcosDisparados.push(marco);
     }
   });
+});
+  }
+}
+
+// ================================================================
+// PLP — PAGINA DE LISTAGEM DE PRODUTOS
+// ================================================================
 });
 function showPLP(cat) {
   cat = cat || 'Todos';
