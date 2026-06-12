@@ -882,6 +882,8 @@ function goTo(viewName) {
   document.getElementById('view-' + viewName).classList.add('active');
   window.scrollTo(0, 0);
 
+  resetScrollDepth();
+
   // Dispara page_view quando navega para home
   if (viewName === 'home') {
     renderHomeGrid();
@@ -915,6 +917,7 @@ function showPLP(cat) {
   for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
   document.getElementById('view-plp').classList.add('active');
   window.scrollTo(0, 0);
+  resetScrollDepth();
 
   // ── EVENTO: view_item_list ─────────────────────────────────
   // Disparado quando o usuario ve uma lista de produtos.
@@ -1088,6 +1091,7 @@ function openPDP(p) {
   for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
   document.getElementById('view-pdp').classList.add('active');
   window.scrollTo(0, 0);
+  resetScrollDepth();
 
   // ── EVENTO: view_item ──────────────────────────────────────
   // Disparado quando o usuario abre a pagina de detalhe do produto.
@@ -1321,6 +1325,7 @@ function goCheckout() {
   for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
   document.getElementById('view-checkout').classList.add('active');
   window.scrollTo(0, 0);
+  resetScrollDepth();
 
   var items = Object.values(cart);
   var total = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
@@ -1616,6 +1621,42 @@ function closeNav() {
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.nitem')) closeNav();
 });
+
+// ================================================================
+// SCROLL DEPTH — 25, 50, 75, 100%
+// ================================================================
+// Rastreia ate onde o usuario rolou a pagina.
+// Cada marco e disparado apenas uma vez por navegacao de pagina.
+// O GTM usa o evento scroll_depth para acionar tags de engajamento.
+var scrollMarks = { 25: false, 50: false, 75: false, 100: false };
+
+function checkScrollDepth() {
+  var scrollTop = window.scrollY || document.documentElement.scrollTop;
+  var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  if (docHeight <= 0) return;
+
+  var pct = Math.round((scrollTop / docHeight) * 100);
+
+  [25, 50, 75, 100].forEach(function(mark) {
+    if (!scrollMarks[mark] && pct >= mark) {
+      scrollMarks[mark] = true;
+
+      // ── EVENTO: scroll_depth ───────────────────────────────────
+      // percent indica o marco atingido (25, 50, 75 ou 100).
+      // page_title identifica em qual pagina o scroll ocorreu.
+      push('scroll_depth', {
+        percent: mark,
+        page_title: document.title
+      });
+    }
+  });
+}
+
+function resetScrollDepth() {
+  scrollMarks = { 25: false, 50: false, 75: false, 100: false };
+}
+
+window.addEventListener('scroll', checkScrollDepth, { passive: true });
 
 // ================================================================
 // UTILITARIOS
