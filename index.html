@@ -4,13 +4,14 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Maison Decor — Estudo GTM/GA4</title>
-<!-- Google Tag Manager -->
+<!--
+COLE SEU SNIPPET GTM AQUI:
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MSVSNNL8');</script>
-<!-- End Google Tag Manager -->
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+-->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -167,7 +168,7 @@ header{background:var(--white);border-bottom:1px solid var(--border);position:st
 .cc{border-radius:12px;overflow:hidden;cursor:pointer;position:relative;aspect-ratio:4/3;display:flex;align-items:flex-end;transition:transform .2s;}
 .cc:hover{transform:scale(1.02);}
 .cc-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:80px;}
-.cc-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 60%);pointer-events:none;}
+.cc-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 60%);}
 .cc-info{position:relative;padding:1.25rem;color:#fff;}
 .cc-tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
 .cc-title{font-family:var(--font-d);font-size:1.2rem;font-weight:400;line-height:1.2;}
@@ -357,10 +358,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.65);margin-top:4rem;}
 </style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MSVSNNL8"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+
 <!-- MONITOR DATALAYER -->
 <div id="mon">
   <div id="mon-toggle" onclick="toggleMon()">
@@ -543,6 +541,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
   </div>
+
+  <div class="sec" style="padding-top:0">
+    <div class="sec-hdr"><h2 class="sec-title">Onde nos encontrar</h2></div>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+      <iframe id="mapa-lojas" src="https://www.openstreetmap.org/export/embed.html?bbox=-46.65%2C-23.57%2C-46.62%2C-23.55&amp;layer=mapnik" style="width:100%;height:320px;border:0" title="Mapa das lojas Maison Decor"></iframe>
+    </div>
+  </div>
+
+  <div id="promo-frete-wrap" class="sec" style="padding-top:0">
+    <div id="promo-frete" style="background:linear-gradient(135deg,#C8A96E,#A8893E);border-radius:12px;padding:2.5rem 2rem;text-align:center;color:#fff">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.85;margin-bottom:8px">Oferta por tempo limitado</div>
+      <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:400;margin-bottom:8px">Frete gratis em todo o Brasil</div>
+      <div style="font-size:14px;opacity:.85;margin-bottom:1.5rem">Em compras acima de R$499 — valido ate o fim do mes</div>
+      <button class="btn-o" style="border-color:#fff" onclick="showPLP('Todos')">Aproveitar agora</button>
+    </div>
+  </div>
+
+  <div class="sec" style="padding-top:0;text-align:center">
+    <button id="btn-erro" onclick="dispararErro()" style="font-size:12px;color:var(--muted);background:none;border:1px dashed var(--border);border-radius:6px;padding:8px 16px">[Estudo] Disparar erro JavaScript</button>
+  </div>
 </div>
 
 <!-- PLP -->
@@ -622,16 +640,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="co-grid">
         <div class="co-form">
           <div class="co-ft">Seus dados</div>
-          <div class="fg2">
-            <div class="fg"><label>Nome</label><input id="f-nome" placeholder="Joao"/></div>
-            <div class="fg"><label>Sobrenome</label><input id="f-sob" placeholder="Silva"/></div>
-          </div>
-          <div class="fg"><label>E-mail</label><input type="email" id="f-email" placeholder="joao@email.com"/></div>
-          <div class="fg2">
-            <div class="fg"><label>CPF</label><input id="f-cpf" placeholder="000.000.000-00"/></div>
-            <div class="fg"><label>Telefone</label><input id="f-tel" placeholder="(11) 99999-9999"/></div>
-          </div>
-          <button class="cobtn cobtn-n" onclick="coStep(2)">Continuar &#8594;</button>
+          <form id="form-dados" onsubmit="return submitDados(event)">
+            <div class="fg2">
+              <div class="fg"><label>Nome</label><input id="f-nome" name="nome" placeholder="Joao" required/></div>
+              <div class="fg"><label>Sobrenome</label><input id="f-sob" name="sobrenome" placeholder="Silva" required/></div>
+            </div>
+            <div class="fg"><label>E-mail</label><input type="email" id="f-email" name="email" placeholder="joao@email.com" required/></div>
+            <div class="fg2">
+              <div class="fg"><label>CPF</label><input id="f-cpf" name="cpf" placeholder="000.000.000-00"/></div>
+              <div class="fg"><label>Telefone</label><input id="f-tel" name="telefone" placeholder="(11) 99999-9999"/></div>
+            </div>
+            <button type="submit" class="cobtn cobtn-n">Continuar &#8594;</button>
+          </form>
         </div>
         <div id="os1"></div>
       </div>
@@ -736,7 +756,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div><div class="ft-t">Maison Decor</div><div class="ft-links"><a>Quem somos</a><a>Nossa historia</a><a>Trabalhe conosco</a><a>Imprensa</a><a>Sustentabilidade</a></div></div>
     <div><div class="ft-t">Produtos</div><div class="ft-links"><a onclick="showPLP('Sala')">Sala de Estar</a><a onclick="showPLP('Quarto')">Quarto</a><a onclick="showPLP('Cozinha')">Cozinha</a><a onclick="showPLP('Banheiro')">Banheiro</a><a onclick="showPLP('Outlet')">Outlet</a></div></div>
     <div><div class="ft-t">Atendimento</div><div class="ft-links"><a>Central de ajuda</a><a>Rastrear pedido</a><a>Trocas e devolucoes</a><a>Fale conosco</a><a>Politica de privacidade</a></div></div>
-    <div><div class="ft-t">Redes sociais</div><div class="ft-links"><a>Instagram</a><a>Facebook</a><a>Pinterest</a><a>YouTube</a></div></div>
+    <div><div class="ft-t">Redes sociais</div><div class="ft-links"><a href="https://www.instagram.com" target="_blank">Instagram</a><a href="https://www.facebook.com" target="_blank">Facebook</a><a href="https://www.pinterest.com" target="_blank">Pinterest</a><a href="https://www.youtube.com" target="_blank">YouTube</a></div></div>
   </div>
   <div class="ft-bot">
     <span>&#169; 2025 Maison Decor - Ambiente de estudo GTM/GA4</span>
@@ -837,7 +857,8 @@ var dotMap = {
   page_view:'d-pv', view_item_list:'d-vil', view_item:'d-vi', select_item:'d-si',
   add_to_cart:'d-ac', remove_from_cart:'d-rc', view_cart:'d-vc',
   begin_checkout:'d-bc', add_shipping_info:'d-as', add_payment_info:'d-ap',
-  purchase:'d-pu', login:'d-lo', select_promotion:'d-sp'
+  purchase:'d-pu', login:'d-lo', select_promotion:'d-sp',
+  scroll:'d-pv', form_submit:'d-si', promo_visivel:'d-sp'
 };
 
 function renderMon() {
@@ -882,8 +903,6 @@ function goTo(viewName) {
   document.getElementById('view-' + viewName).classList.add('active');
   window.scrollTo(0, 0);
 
-  resetScrollDepth();
-
   // Dispara page_view quando navega para home
   if (viewName === 'home') {
     renderHomeGrid();
@@ -917,7 +936,6 @@ function showPLP(cat) {
   for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
   document.getElementById('view-plp').classList.add('active');
   window.scrollTo(0, 0);
-  resetScrollDepth();
 
   // ── EVENTO: view_item_list ─────────────────────────────────
   // Disparado quando o usuario ve uma lista de produtos.
@@ -1091,7 +1109,6 @@ function openPDP(p) {
   for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
   document.getElementById('view-pdp').classList.add('active');
   window.scrollTo(0, 0);
-  resetScrollDepth();
 
   // ── EVENTO: view_item ──────────────────────────────────────
   // Disparado quando o usuario abre a pagina de detalhe do produto.
@@ -1325,7 +1342,6 @@ function goCheckout() {
   for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
   document.getElementById('view-checkout').classList.add('active');
   window.scrollTo(0, 0);
-  resetScrollDepth();
 
   var items = Object.values(cart);
   var total = items.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
@@ -1623,46 +1639,82 @@ document.addEventListener('click', function(e) {
 });
 
 // ================================================================
-// SCROLL DEPTH — 25, 50, 75, 100%
-// ================================================================
-// Rastreia ate onde o usuario rolou a pagina.
-// Cada marco e disparado apenas uma vez por navegacao de pagina.
-// O GTM usa o evento scroll_depth para acionar tags de engajamento.
-var scrollMarks = { 25: false, 50: false, 75: false, 100: false };
-
-function checkScrollDepth() {
-  var scrollTop = window.scrollY || document.documentElement.scrollTop;
-  var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  if (docHeight <= 0) return;
-
-  var pct = Math.round((scrollTop / docHeight) * 100);
-
-  [25, 50, 75, 100].forEach(function(mark) {
-    if (!scrollMarks[mark] && pct >= mark) {
-      scrollMarks[mark] = true;
-
-      // ── EVENTO: scroll_depth ───────────────────────────────────
-      // percent indica o marco atingido (25, 50, 75 ou 100).
-      // page_title identifica em qual pagina o scroll ocorreu.
-      push('scroll_depth', {
-        percent: mark,
-        page_title: document.title
-      });
-    }
-  });
-}
-
-function resetScrollDepth() {
-  scrollMarks = { 25: false, 50: false, 75: false, 100: false };
-}
-
-window.addEventListener('scroll', checkScrollDepth, { passive: true });
-
-// ================================================================
 // UTILITARIOS
 // ================================================================
 function fmt(v) {
   return 'R$ ' + v.toFixed(2).replace('.', ',');
+}
+
+// ================================================================
+// FORMULARIO — ENVIO DE FORMULARIO REAL
+// ================================================================
+// O checkout step 1 agora usa uma tag <form> de verdade.
+// Quando o usuario clica em "Continuar", o evento submit dispara.
+// event.preventDefault() impede que a pagina recarregue.
+// Isso permite praticar o acionador "Envio de formulario" no GTM,
+// que escuta o evento gtm.formSubmit automaticamente.
+function submitDados(event) {
+  event.preventDefault();
+
+  // ── EVENTO: form_submit ────────────────────────────────────
+  // Disparado quando o usuario envia o formulario de dados.
+  // form_id permite identificar qual formulario foi enviado.
+  push('form_submit', {
+    form_id: 'form-dados',
+    form_name: 'dados_pessoais'
+  });
+
+  // Continua para o proximo step do checkout
+  coStep(2);
+  return false;
+}
+
+// ================================================================
+// ERRO JAVASCRIPT — PARA O ACIONADOR "ERROR JAVASCRIPT"
+// ================================================================
+// Esse botao gera um erro de JS de proposito.
+// O GTM tem um acionador "Error JavaScript" que escuta o evento
+// gtm.pageError automaticamente quando um erro nao tratado acontece.
+// Util para monitorar a saude do site em producao.
+function dispararErro() {
+  // Chama uma funcao que nao existe — gera ReferenceError
+  funcaoQueNaoExiste();
+}
+
+// ================================================================
+// VISIBILIDADE DO ELEMENTO — INTERSECTION OBSERVER
+// ================================================================
+// O banner de frete so conta como "visto" quando o usuario rola
+// ate ele e ele aparece na tela. Usamos IntersectionObserver — a
+// API nativa do navegador para detectar visibilidade de elementos.
+// No GTM, o acionador "Visibilidade do elemento" faz isso pela
+// interface, sem codigo. Aqui simulamos para gerar o evento.
+var promoVisto = false;
+if ('IntersectionObserver' in window) {
+  var promoObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      // entry.isIntersecting = true quando o elemento entra na tela
+      // entry.intersectionRatio >= 0.5 = pelo menos 50% visivel
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.5 && !promoVisto) {
+        promoVisto = true;
+
+        // ── EVENTO: promo_visivel ──────────────────────────────
+        // Disparado quando o banner de frete fica 50% visivel.
+        // Util para medir se promocoes abaixo da dobra sao vistas.
+        push('promo_visivel', {
+          promotion_id: 'BANNER-FRETE-GRATIS',
+          promotion_name: 'Frete gratis acima de R$499',
+          visibility_percent: 50
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+
+  // Comeca a observar o banner assim que a pagina carrega
+  setTimeout(function() {
+    var promoEl = document.getElementById('promo-frete');
+    if (promoEl) promoObserver.observe(promoEl);
+  }, 500);
 }
 
 // ================================================================
